@@ -47,6 +47,7 @@ function start() {
   drawRoom();
   choose();
   clock = setInterval(tick, 1000);
+  playMusic();
   window.scrollTo({top:0,behavior:'instant'});
   $('answer').focus({preventScroll:true});
 }
@@ -195,18 +196,25 @@ $('sound').addEventListener('change', e => {
 });
 
 
-/* Trilha opcional: o jogador seleciona um arquivo de áudio local que pode utilizar.
-   O projeto não distribui gravações comerciais nem baixa músicas automaticamente. */
-const backgroundTrack = new Audio();
+/* Trilha padrão do jogo; o jogador também pode selecionar outro arquivo local. */
+const DEFAULT_TRACK = 'trilha.mp3.mpeg';
+const backgroundTrack = new Audio(DEFAULT_TRACK);
 backgroundTrack.loop = true;
 backgroundTrack.volume = 0.24;
-backgroundTrack.preload = 'none';
+backgroundTrack.preload = 'metadata';
 let trackUrl = null;
 const musicButton = $('music-play');
 const musicStatus = $('music-status');
+musicStatus.textContent = 'Trilha do jogo';
+musicButton.disabled = false;
 function syncMusicButton() {
   musicButton.textContent = backgroundTrack.paused ? '▶' : '❚❚';
   musicButton.setAttribute('aria-label',backgroundTrack.paused?'Reproduzir música':'Pausar música');
+}
+async function playMusic() {
+  try { await backgroundTrack.play(); }
+  catch (_) { musicStatus.title = 'Clique em reproduzir para ouvir a trilha'; }
+  syncMusicButton();
 }
 $('music-file').addEventListener('change', async e => {
   const file = e.target.files?.[0];
@@ -224,19 +232,11 @@ $('music-file').addEventListener('change', async e => {
   musicStatus.textContent = file.name.length > 28 ? file.name.slice(0,25)+'…' : file.name;
   musicStatus.title = file.name;
   musicButton.disabled=false;
-  syncMusicButton();
-  try { await backgroundTrack.play(); }
-  catch (_) { musicStatus.title = 'Clique em reproduzir para ouvir '+file.name; }
-  syncMusicButton();
+  await playMusic();
 });
 musicButton.addEventListener('click', async () => {
-  if (!backgroundTrack.src) return;
   if (!backgroundTrack.paused) backgroundTrack.pause();
-  else {
-    try { await backgroundTrack.play(); }
-    catch (_) { musicStatus.textContent='Não foi possível reproduzir o arquivo.'; }
-  }
-  syncMusicButton();
+  else await playMusic();
 });
 $('music-volume').addEventListener('input',e => { backgroundTrack.volume=Number(e.target.value)/100; });
 backgroundTrack.addEventListener('ended',syncMusicButton);

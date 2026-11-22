@@ -28,6 +28,6 @@ Antes da entrega, a equipe deve testar o funcionamento do jogo, conferir as reso
 
 ## Trilha sonora opcional
 
-Na barra superior, clique em **Escolher música** para selecionar um arquivo de áudio do seu dispositivo (MP3, OGG, WAV ou M4A). A música toca em repetição e possui controles de pausa e volume independentes dos efeitos do jogo. Caso o navegador bloqueie o início do áudio, clique em **Reproduzir**. A seleção é local e precisa ser refeita após recarregar a página.
+O jogo usa `trilha.mp3.mpeg` como trilha sonora padrão, em repetição. Na barra superior, os controles permitem pausar/reproduzir e ajustar o volume da música, independentemente dos efeitos do jogo. O botão **Escolher música** continua disponível para selecionar outro arquivo de áudio local (MP3, OGG, WAV ou M4A). Caso o navegador bloqueie o início automático, clique em **Reproduzir**.
 
 Se quiser utilizar **Rockin' in the Free World**, selecione uma cópia do áudio para a qual tenha autorização de uso. O repositório não inclui a gravação nem faz download de serviços de streaming.
